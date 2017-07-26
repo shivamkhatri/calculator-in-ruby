@@ -2,39 +2,40 @@
 
 class Calculator
 
-  def self.+(x , y)
-    float_format = x + y
-    int_format = float_format.to_i
-    return int_format if int_format == float_format
-    return float_format
+  attr_accessor :val
+
+  def initialize(val)
+    @val = val.to_f
   end
 
-  def self.-(x , y)
-    float_format = x - y
+  @@print_format = lambda{ |float_format |
     int_format = float_format.to_i
-    return int_format if int_format == float_format
-    return float_format
+  return int_format if int_format == float_format
+  return float_format } #this lambda function will return integer format data if there are leading zeros after decimal
+
+  def add(x)
+    float_format = @val + x
+    return @@print_format.call(float_format)
   end
 
-  def self.*(x , y)
-    float_format = x * y
-    int_format = float_format.to_i
-    return int_format if int_format == float_format
-    return float_format
+  def subtract(x)
+    float_format = @val - x
+    return @@print_format.call(float_format)
   end
 
-  def self./(x , y)
-    float_format = x.to_f / y.to_f
-    int_format = float_format.to_i
-    return int_format if int_format == float_format
-    return float_format
+  def multiply(x)
+    float_format = @val * x
+    return @@print_format.call(float_format)
   end
 
-  def self.%(x , y)
-    float_format = x % y
-    int_format = float_format.to_i
-    return int_format if int_format == float_format
-    return float_format
+  def divide(x)
+    float_format = @val / x
+    return @@print_format.call(float_format)
+  end
+
+  def remainder(x)
+    float_format = @val % x
+    return @@print_format.call(float_format)
   end
 
 end
@@ -54,17 +55,21 @@ print "Enter the expression of the type \n operand1 operator operand2 \n"
 
 op1 , operator , op2 = gets.chomp.split(" ")
 
+object1 = Calculator.new(op1)
+object2 = Calculator.new(op2)
+
+
 case
   when operator == '+'
-    puts Calculator.+(op1.to_f , op2.to_f )
+    puts object1.add(object2.val )
   when operator == '-'
-    puts Calculator.-(op1.to_f , op2.to_f )
+    puts object1.subtract(object2.val )
   when operator == '*'
-    puts Calculator.*(op1.to_f , op2.to_f )
+    puts object1.multiply(object2.val )
   when operator == '/'
-    puts Calculator./(op1.to_f , op2.to_f )
+    puts object1.divide(object2.val )
   when operator == '%'
-    puts Calculator.%(op1.to_f , op2.to_f )
+    puts object1.remainder(object2.val )
   else
     puts "Wrong Input"
 end
